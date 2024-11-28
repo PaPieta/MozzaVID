@@ -1,0 +1,10 @@
+lightning
+monai
+numpy
+pandas
+scikit_learn
+tifffile
+timm
+#torch
+#torchvision
+vit_pytorch
