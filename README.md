@@ -2,6 +2,8 @@
 
 >A set of functions enabling a quick start in training models on the MozzaVID dataset, as well as evaluation of the performance of models reported in the dataset paper.
 
+### [[Data](link.com)] [[Paper](link.com)] [[Project website](link.com)]
+
 ## Prerequisites
 
 Complete set of requred packages can be installed through the requirements file:
@@ -26,7 +28,7 @@ A simple model training can be run with the ```train_model.py``` script. Existin
 
 ## Reference
 
-If you use our dataset, or any of this code for academic work, please consider citing our paper.
+If you use our dataset, or any of this code for academic work, please consider citing our publication.
 
 TODO
 
