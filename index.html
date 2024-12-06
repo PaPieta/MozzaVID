@@ -92,7 +92,7 @@
 
                           <!-- Data link-->
                       <span class="link-block">
-                        <a href="https://archive.compute.dtu.dk/<DATA PATH>.pdf" target="_blank"
+                        <a href="https://archive.compute.dtu.dk/files/public/projects/MozzaVID/" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-download"></i>
@@ -140,7 +140,7 @@
         <img src="static/images/sample_slices.png" alt="MY ALT TEXT"/>
         
       <h2 class="subtitle has-text-centered">
-        Mozzarella microstructure in example coarse and fine-grained classes. MozzaVID is a benchmark volumetric classification dataset containing mozzarella CT images at three dataset splits (sizes) and two classification targets.
+        Mozzarella microstructure in example coarse and fine-grained classes. MozzaVID is a benchmark volumetric (3D) classification dataset containing mozzarella CT images at three dataset splits (sizes) and two classification targets.
       </h2>
     </div>
   </div>
@@ -192,7 +192,7 @@
         <!-- Your image here -->
         <img src="static/images/accuracy_table.png" alt="Tested models' accuracy"/>
         <h2 class="subtitle has-text-centered">
-          The dataset is evaluated on a range of established deep-learning architectures. Reported classification accuracy highlights the impact of 3D representation, as well as performance increase with the dataset size. 
+          The dataset is evaluated on a range of established deep-learning architectures. Reported classification accuracy highlights the impact of the 3D representation, as well as performance increase with the dataset size. 
           At the same time, Swin - the most advanced model performs very well on 2D data, while underperforming in 3D. This trend suggests that State-of-the-Art models are not optimized for volumetric data, highlighting the need for 3D-oriented model development. 
           We argue that MozzaVID can serve as a useful benchmark for this purpose. The Large dataset can be used to establish the base performance of the model, while the smaller instances allow for tailoring the models to the specific limitations of volumetric data.
         </h2>
@@ -251,7 +251,7 @@
         <img src="static/images/UMAP_fine.png" alt="UMAP, fine-grained target" style="height: 50vh"/>
         </div>
         <h2 class="subtitle has-text-centered">
-         The same analysis is performed on a best-performing fine-grained model. The observations largely follow those from the coarse-grained model. 
+         The same analysis is performed on a best-performing fine-grained model. The observations largely follow those from the coarse-grained analysis. 
          The relative placement of the clusters seems to be even more ordered than in the previous examples, which may result from the need to detect subtler differences between samples and the absence of regularizing constraints imposed by the 25 coarse-grained classes.
        </h2>
      </div>
