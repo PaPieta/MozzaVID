@@ -2,7 +2,7 @@
 
 >A set of functions enabling a quick start in training models on the MozzaVID dataset, as well as evaluation of the performance of models reported in the dataset paper.
 
-### [[Data](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/)] [Paper - TBA] [[Project website](https://papieta.github.io/MozzaVID/)]
+### [[Data](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/)] [[Paper](https://arxiv.org/abs/2412.04880)] [[Project website](https://papieta.github.io/MozzaVID/)]
 
 ## Prerequisites
 
@@ -32,7 +32,18 @@ A simple model training can be run with the ```train_model.py``` script. Existin
 
 If you use our dataset, or any of this code for academic work, please consider citing our publication.
 
-TBA
+``` bibtex
+@misc{pieta2024mozzavidmozzarellavolumetricimage,
+      title={MozzaVID: Mozzarella Volumetric Image Dataset}, 
+      author={Pawel Tomasz Pieta and Peter Winkel Rasmussen and Anders Bjorholm Dahl and Jeppe Revall Frisvad and Siavash Arjomand Bigdeli and Carsten Gundlach and Anders Nymark Christensen},
+      year={2024},
+      howpublished={arXiv:2412.04880 [cs.CV]},
+      eprint={2412.04880},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2412.04880}, 
+}
+```
 
 ## License
 
