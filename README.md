@@ -33,7 +33,7 @@ A simple model training can be run with the ```train_model.py``` script. Existin
 If you use our dataset, or any of this code for academic work, please consider citing our publication.
 
 ``` bibtex
-@misc{pieta2024mozzavidmozzarellavolumetricimage,
+@misc{pieta2024b,
       title={MozzaVID: Mozzarella Volumetric Image Dataset}, 
       author={Pawel Tomasz Pieta and Peter Winkel Rasmussen and Anders Bjorholm Dahl and Jeppe Revall Frisvad and Siavash Arjomand Bigdeli and Carsten Gundlach and Anders Nymark Christensen},
       year={2024},
