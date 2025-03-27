@@ -103,7 +103,7 @@
 
                   <!-- Github link -->
                   <span class="link-block">
-                    <a href="https://github.com/PaPieta/MozzaVID/tree/main" target="_blank"
+                    <a href="https://github.com/PaPieta/MozzaVID/" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
@@ -155,7 +155,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Influenced by the complexity of volumetric imaging, there is a shortage of established datasets useful for benchmarking volumetric deep-learning models. As a consequence, new and existing models are not easily comparable, limiting the development of architectures optimized specifically for volumetric data. To counteract this trend, we introduce MozzaVID -- a large, clean, and versatile volumetric classification dataset. Our dataset contains X-ray computed tomography (CT) images of mozzarella microstructure and enables the classification of 25 cheese types and 149 cheese samples. We provide data in three different resolutions, resulting in three dataset instances containing from 591 to 37,824 images. While being general-purpose, the dataset also facilitates investigating mozzarella structure properties. The structure of food directly affects its functional properties and thus its consumption experience. Understanding food structure helps tune the production and mimicking it enables sustainable alternatives to animal-derived food products. The complex and disordered nature of food structures brings a unique challenge, where a choice of appropriate imaging method, scale, and sample size is not trivial. With this dataset we aim to address these complexities, contributing to more robust structural analysis models.
+            Influenced by the complexity of volumetric imaging, there is a shortage of established datasets useful for benchmarking volumetric deep-learning models. As a consequence, new and existing models are not easily comparable, limiting the development of architectures optimized specifically for volumetric data. To counteract this trend, we introduce MozzaVID -- a large, clean, and versatile volumetric classification dataset. Our dataset contains X-ray computed tomography (CT) images of mozzarella microstructure and enables the classification of 25 cheese types and 149 cheese samples. We provide data in three different resolutions, resulting in three dataset instances containing from 591 to 37,824 images. While targeted for developing general purpose volumetric algorithms, the dataset also facilitates investigating the properties of mozzarella microstructure. The complex and disordered nature of food structures brings a unique challenge, where a choice of appropriate imaging method, scale, and sample size is not trivial. With this dataset, we aim to address these complexities, contributing to more robust structural analysis models and a deeper understanding of food structure.
           </p>
         </div>
       </div>
@@ -172,28 +172,30 @@
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
-        <div class="columns is-centered">
-          <img src="static/images/dataset_instance_creation.png" alt="Dataset instance preparation" style="height: 50vh"/>
+        <div class="columns is-centered has-text-centered">
+          <img src="static/images/dataset_instance_creation.png" alt="Dataset instance preparation" style="height: 70vh"/>
           </div>
           <h2 class="subtitle has-text-centered">
             We use the 590 high-resolution synchrotron scans of the mozzarella structure to create three dataset instances. The raw volume is downscaled and split, ensuring that in each case the final volumes have the shape of 192 cubed. The three instances contain 591, 4.728, and 37.824 volumes, respectively.
           </h2>
       </div>
       <div class="item">
-        <div class="columns is-centered">
+        <div class="columns is-centered has-text-centered">
           <!-- Your image here -->
-          <img src="static/images/2d_vs_3d_size_v3.png" alt="2D and 3D dataset sizes" style="height: 45vh"/>
+          <img src="static/images/2d_vs_3d_size_v5_text.png" alt="2D and 3D dataset sizes" style="height: 70vh"/>
           </div>
           <h2 class="subtitle has-text-centered">
             Most benchmark 2D datasets consist of large amounts of relatively small images. In contrast, 3D volumetric datasets are scarce and often contain fewer, large volumes. The three instances of the proposed MozzaVID dataset form a bridge between the two groups while maintaining the volume sizes known from other volumetric datasets.
           </h2>
       </div>
       <div class="item">
+        <div class="columns is-centered has-text-centered">
         <!-- Your image here -->
-        <img src="static/images/accuracy_table.png" alt="Tested models' accuracy"/>
+        <img src="static/images/accuracy_table.png" alt="Tested models' accuracy" style="height: 60vh"/>
+      </div>
         <h2 class="subtitle has-text-centered">
           The dataset is evaluated on a range of established deep-learning architectures. Reported classification accuracy highlights the impact of the 3D representation, as well as performance increase with the dataset size. 
-          At the same time, Swin - the most advanced model performs very well on 2D data, while underperforming in 3D. This trend suggests that State-of-the-Art models are not optimized for volumetric data, highlighting the need for 3D-oriented model development. 
+          Moreover, the strong performance of ResNet, suggest that simpler architectures continue to be the most effective for volumetric data. This implies that some State-of-the-Art models may be overly optimized for 2D images, highlighting the need for 3D-oriented model development. 
           We argue that MozzaVID can serve as a useful benchmark for this purpose. The Large dataset can be used to establish the base performance of the model, while the smaller instances allow for tailoring the models to the specific limitations of volumetric data.
         </h2>
      </div>
@@ -213,7 +215,7 @@
         <h2 class="title is-3">Structural analysis</h2>
         <div class="content has-text-justified">
           <p>
-            Apart from providing a general benchmark, MozzaVID is specifically targeted towards developing and evaluating methods for deep learning-based structural analysis. The structure of materials directly affects their functional properties, and structural analysis is an important use case for volumetric images. Structural properties are also an essential part of certain food products such as meat, bread, pastries, and cheese (e.g. mozzarella). With 34% of greenhouse gas emissions linked to food, understanding structural properties is crucial for developing environmentally-friendly alternatives of known structured foods that are also pleasant to eat.
+            Apart from providing a general benchmark, the dataset is specifically targeted towards developing and evaluating methods for deep learning-based structural analysis. The structure of materials directly influences their functional properties, and structural analysis is an important use case for volumetric images. At the same time, CT imaging has become a common choice for food analysis, where many products, such as meat, bread, pastries, and cheese (e.g. mozzarella) are heavily defined by their structural properties. With 34% of greenhouse gas emissions linked to food, understanding its structural properties is crucial for developing environmentally friendly alternatives to known structured foods that are also pleasant to eat.
           </p>
         </div>
       </div>
@@ -229,17 +231,19 @@
     <div class="container">
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
-        <div class="columns is-centered">
+        <div class="columns is-centered has-text-centered">
         <!-- Your image here -->
-        <img src="static/images/exp_design_pca.png" alt="Colored PCA of sample experimental design" style="height: 45vh"/>
+        <img src="static/images/exp_design_pca.png" alt="Colored PCA of sample experimental design" style="height: 60vh"/>
         </div>
         <h2 class="subtitle has-text-centered">
           We use the experimental design of the mozzarella types to express the similarity between classes. The parameter space is compressed with PCA and colored to enable further analysis.
         </h2>
       </div>
       <div class="item">
+        <div class="columns is-centered has-text-centered">
         <!-- Your image here -->
-        <img src="static/images/UMAP_coarse.png" alt="UMAP, coarse-grained target" />
+        <img src="static/images/UMAP_coarse.png" alt="UMAP, coarse-grained target" style="height: 70vh"/>
+        </div>
         <h2 class="subtitle has-text-centered">
           We compress the second-to-last layer embeddings of our best-performing coarse-grained model (3D ResNet) using the UMAP algorithm. The resulting clusters closely follow the class assignment. At the same time, cheese types with similar experimental design populate the same areas.
            Few outliers are well explained by their actual structural properties, as visualized with the slice-based representation.
@@ -247,8 +251,8 @@
       </div>
       <div class="item">
         <!-- Your image here -->
-        <div class="columns is-centered">
-        <img src="static/images/UMAP_fine.png" alt="UMAP, fine-grained target" style="height: 50vh"/>
+        <div class="columns is-centered  has-text-centered">
+        <img src="static/images/UMAP_fine.png" alt="UMAP, fine-grained target" style="height: 70vh"/>
         </div>
         <h2 class="subtitle has-text-centered">
          The same analysis is performed on a best-performing fine-grained model. The observations largely follow those from the coarse-grained analysis. 
@@ -268,15 +272,15 @@
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
       <pre><code>@misc{pieta2024b,
-              title={MozzaVID: Mozzarella Volumetric Image Dataset}, 
-              author={Pawel Tomasz Pieta and Peter Winkel Rasmussen and Anders Bjorholm Dahl and Jeppe Revall Frisvad and Siavash Arjomand Bigdeli and Carsten Gundlach and Anders Nymark Christensen},
-              year={2024},
-              howpublished={arXiv:2412.04880 [cs.CV]},
-              eprint={2412.04880},
-              archivePrefix={arXiv},
-              primaryClass={cs.CV},
-              url={https://arxiv.org/abs/2412.04880},
-            }</code></pre>
+      title={MozzaVID: Mozzarella Volumetric Image Dataset}, 
+      author={Pawel Tomasz Pieta and Peter Winkel Rasmussen and Anders Bjorholm Dahl and Jeppe Revall Frisvad and Siavash Arjomand Bigdeli and Carsten Gundlach and Anders Nymark Christensen},
+      year={2024},
+      howpublished={arXiv:2412.04880 [cs.CV]},
+      eprint={2412.04880},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2412.04880},
+      }</code></pre>
     </div>
 </section>
 <!--End BibTex citation -->
