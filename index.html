@@ -173,7 +173,7 @@
        <div class="item">
         <!-- Your image here -->
         <div class="columns is-centered has-text-centered">
-          <img src="static/images/dataset_instance_creation.png" alt="Dataset instance preparation" style="height: 70vh"/>
+          <img src="static/images/dataset_instance_creation.png" alt="Dataset instance preparation" style="width: 50vw; max-width: 1000px;"/>
           </div>
           <h2 class="subtitle has-text-centered">
             We use the 590 high-resolution synchrotron scans of the mozzarella structure to create three dataset instances. The raw volume is downscaled and split, ensuring that in each case the final volumes have the shape of 192 cubed. The three instances contain 591, 4.728, and 37.824 volumes, respectively.
@@ -182,7 +182,7 @@
       <div class="item">
         <div class="columns is-centered has-text-centered">
           <!-- Your image here -->
-          <img src="static/images/2d_vs_3d_size_v5_text.png" alt="2D and 3D dataset sizes" style="height: 70vh"/>
+          <img src="static/images/2d_vs_3d_size_v5_text.png" alt="2D and 3D dataset sizes" style="width: 40vw; max-width: 800px;"/>
           </div>
           <h2 class="subtitle has-text-centered">
             Most benchmark 2D datasets consist of large amounts of relatively small images. In contrast, 3D volumetric datasets are scarce and often contain fewer, large volumes. The three instances of the proposed MozzaVID dataset form a bridge between the two groups while maintaining the volume sizes known from other volumetric datasets.
@@ -191,7 +191,7 @@
       <div class="item">
         <div class="columns is-centered has-text-centered">
         <!-- Your image here -->
-        <img src="static/images/accuracy_table.png" alt="Tested models' accuracy" style="height: 60vh"/>
+        <img src="static/images/accuracy_table.png" alt="Tested models' accuracy" style="width: 80vw"/>
       </div>
         <h2 class="subtitle has-text-centered">
           The dataset is evaluated on a range of established deep-learning architectures. Reported classification accuracy highlights the impact of the 3D representation, as well as performance increase with the dataset size. 
@@ -233,7 +233,7 @@
        <div class="item">
         <div class="columns is-centered has-text-centered">
         <!-- Your image here -->
-        <img src="static/images/exp_design_pca.png" alt="Colored PCA of sample experimental design" style="height: 60vh"/>
+        <img src="static/images/exp_design_pca.png" alt="Colored PCA of sample experimental design" style="width: 40vw; max-width: 600px;"/>
         </div>
         <h2 class="subtitle has-text-centered">
           We use the experimental design of the mozzarella types to express the similarity between classes. The parameter space is compressed with PCA and colored to enable further analysis.
@@ -242,7 +242,7 @@
       <div class="item">
         <div class="columns is-centered has-text-centered">
         <!-- Your image here -->
-        <img src="static/images/UMAP_coarse.png" alt="UMAP, coarse-grained target" style="height: 70vh"/>
+        <img src="static/images/UMAP_coarse.png" alt="UMAP, coarse-grained target" style="width: 80vw; max-width: 1200px;"/>
         </div>
         <h2 class="subtitle has-text-centered">
           We compress the second-to-last layer embeddings of our best-performing coarse-grained model (3D ResNet) using the UMAP algorithm. The resulting clusters closely follow the class assignment. At the same time, cheese types with similar experimental design populate the same areas.
@@ -252,7 +252,7 @@
       <div class="item">
         <!-- Your image here -->
         <div class="columns is-centered  has-text-centered">
-        <img src="static/images/UMAP_fine.png" alt="UMAP, fine-grained target" style="height: 70vh"/>
+        <img src="static/images/UMAP_fine.png" alt="UMAP, fine-grained target" style="width: 60vw; max-width: 1000px;"/>
         </div>
         <h2 class="subtitle has-text-centered">
          The same analysis is performed on a best-performing fine-grained model. The observations largely follow those from the coarse-grained analysis. 
