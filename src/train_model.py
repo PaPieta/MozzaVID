@@ -5,13 +5,14 @@ import datetime
 import torch
 import lightning as L
 
-import utils
+import utils_local, utils_stream
 from models import model_general
 
 torch.set_float32_matmul_precision("medium")
 
 MODELS_BASE_PATH = "models_new/"
-DATA_BASE_PATH = "data/"
+DATA_BASE_PATH = "data/DTU/" # Set if data is stored locally, streaming path is hard coded in utils_stream.py
+DATA_MODE = "stream"  # "local" or "stream"
 
 # Choose hyperparameter setup from the lists
 GRANULARITY_LIST = ["coarse", "fine"]
@@ -24,32 +25,40 @@ DATASET_SPLIT = DATASET_SPLIT_LIST[0]
 DATA_DIM = DATA_DIM_LIST[0]
 MODEL_TYPE = MODEL_TYPE_LIST[0]
 
-LR = 0.001  # learning rate
+LR = 0.001  # Learning rate
 NUM_EPOCHS = 10
 BATCH_SIZE = 4
 NUM_WORKERS = 4
 ROTATE = False  # Additional rotation of the data, used in the ablation study
 
-
 def train():
     timestamp = datetime.datetime.now().strftime("%y-%m-%d_%H-%M")
 
     # Prepare the dataloaders
-    data_path = f"{DATA_BASE_PATH}{DATASET_SPLIT}/"
+    if DATA_MODE == "local":
+        data_path = f"{DATA_BASE_PATH}{DATASET_SPLIT}/"
 
-    X_train, X_val, y_train, y_val = utils.get_splits(data_path)
-    dataset_func = getattr(utils, f"Mozzarella{DATA_DIM}")
-    train_loader, val_loader = utils.get_data_loaders(
-        dataset_func,
-        X_train,
-        X_val,
-        y_train,
-        y_val,
-        BATCH_SIZE,
-        NUM_WORKERS,
-        rotate=ROTATE,
-    )
-
+        X_train, X_val, y_train, y_val = utils_local.get_splits(data_path)
+        dataset_func = getattr(utils_local, f"Mozzarella{DATA_DIM}")
+        train_loader, val_loader = utils_local.get_data_loaders(
+            dataset_func,
+            X_train,
+            X_val,
+            y_train,
+            y_val,
+            BATCH_SIZE,
+            NUM_WORKERS,
+            rotate=ROTATE,
+        )
+    elif DATA_MODE == "stream":
+        data_path = f"HuggingFace: {DATASET_SPLIT}"
+        print(f"Streaming the {DATASET_SPLIT} data split from HuggingFace")
+        train_loader, val_loader = utils_stream.get_data_loaders(
+            DATASET_SPLIT, data_dim=DATA_DIM, granularity=GRANULARITY,
+            rotate=ROTATE, batch_size=BATCH_SIZE, num_workers=NUM_WORKERS)
+    else:
+        raise ValueError("DATA_MODE must be 'local' or 'stream'")
+    
     # Setup model
     class model_hparams:
         data_dim = DATA_DIM

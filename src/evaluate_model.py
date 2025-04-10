@@ -2,12 +2,13 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 import torch
 from models import model_general
-import utils
+import utils_local, utils_stream
 
 torch.set_float32_matmul_precision("medium")
 
 MODEL_BASE_PATH = "models_original/"
-DATA_BASE_PATH = "data/"
+DATA_BASE_PATH = "data/DTU/" # Set if data is stored locally, streaming path is hard coded in utils_stream.py
+DATA_MODE = "stream"  # "local" or "stream"
 
 # Choose hyperparameter setup from the lists
 GRANULARITY_LIST = ["coarse", "fine"]
@@ -15,36 +16,45 @@ DATASET_SPLIT_LIST = ["Small", "Base", "Large"]
 DATA_DIM_LIST = ["2D", "3D"]
 MODEL_LIST = ["ResNet", "MobileNetV2", "ConvNeXt", "ViT", "Swin"]
 
+GRANULARITY = GRANULARITY_LIST[0]
+DATASET_SPLIT = DATASET_SPLIT_LIST[0]
+DATA_DIM = DATA_DIM_LIST[0]
+MODEL = MODEL_LIST[0]
+
+BATCH_SIZE = 4
+NUM_WORKERS = 0
+
 if __name__ == "__main__":
-    # Choose hypparameter setup from the lists
-    granularity = GRANULARITY_LIST[0]
-    dataset_split = DATASET_SPLIT_LIST[0]
-    data_dim = DATA_DIM_LIST[1]
-    model = MODEL_LIST[0]
-    batch_size = 4
-    num_workers = 0
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Prepare the dataloaders
-    data_path = f"{DATA_BASE_PATH}{dataset_split}/"
-    print(f"Loading the data from: {data_path}")
+    if DATA_MODE == "local":
+        data_path = f"{DATA_BASE_PATH}{DATASET_SPLIT}/"
+        print(f"Loading the data from: {data_path}")
 
-    X_train, X_val, y_train, y_val = utils.get_splits(data_path)
-    dataset_func = getattr(utils, f"Mozzarella{data_dim}")
-    train_loader, val_loader = utils.get_data_loaders(
-        dataset_func, X_train, X_val, y_train, y_val, batch_size, num_workers
-    )
+        X_train, X_val, y_train, y_val = utils_local.get_splits(data_path)
+        dataset_func = getattr(utils_local, f"Mozzarella{DATA_DIM}")
+        train_loader, val_loader = utils_local.get_data_loaders(
+            dataset_func, X_train, X_val, y_train, y_val, BATCH_SIZE, NUM_WORKERS
+        )
+    elif DATA_MODE == "stream":
+        print(f"Streaming the {DATASET_SPLIT} data split from HuggingFace")
+        train_loader, val_loader = utils_stream.get_data_loaders(
+            DATASET_SPLIT, data_dim=DATA_DIM, granularity=GRANULARITY,
+            rotate=False, batch_size=BATCH_SIZE, num_workers=NUM_WORKERS)
+    else:
+        raise ValueError("DATA_MODE must be 'local' or 'stream'")
 
     # Load model from checkpoint
     model_ckpt_path = (
-        f"{MODEL_BASE_PATH}{granularity}/{dataset_split}/{model}_{data_dim}.ckpt"
+        f"{MODEL_BASE_PATH}{GRANULARITY}/{DATASET_SPLIT}/{MODEL}_{DATA_DIM}.ckpt"
     )
 
     class model_hparams:
-        data_dim = data_dim
-        architecture = model
-        granularity = granularity
+        data_dim = DATA_DIM
+        architecture = MODEL
+        granularity = GRANULARITY
 
     print(f"Loading the model from: {model_ckpt_path}")
     model = model_general.Net.load_from_checkpoint(

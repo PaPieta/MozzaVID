@@ -16,17 +16,26 @@ File ```requirements_with_versions.txt``` specfies exact versions of the package
 
 Pytorch is commented out in both requirement files, since it may require a system-specific installation. 
 
-## Data and models
+## Data 
 
-Associated dataset can be downloaded from [here](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/)
+We provide two sources of data:
+1. Complete "raw" data [[LINK](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/)]:
 
-Models can be downloaded from: TBA
+      To use it, you need to download and unzip the dataset locally, then adjust the path to the data in ```evaluate_model.py``` and ```train_model.py```. Notice that the Big dataset requires over 300 GB of storage.
 
-The paths to both models and data have to be adjusted in the ```evaluate_model.py``` and ```train_model.py```
+2. HuggingFace WebDatasets [[Small split](https://huggingface.co/datasets/PaPieta/MozzaVID_Small)] [[Base split](https://huggingface.co/datasets/PaPieta/MozzaVID_Base)] [[Large split](https://huggingface.co/datasets/PaPieta/MozzaVID_Large)]:
+
+      This setup enables continuous streaming of data during training and evaluation, and requires little-to-no storage space. Continuous internet access is required. Suggested data loading setup is provided in ```utils_stream.py```. To use it, change to ```DATA_MODE='stream'``` in ```evaluate_model.py``` and ```train_model.py```
+
+## Models
+
+Model checkpoints used in the paper can be downloaded from [here](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/models)
+
+The paths to models has to be adjusted in the ```evaluate_model.py``` and ```train_model.py```
 
 ## Example code
 
-A simple model training can be run with the ```train_model.py``` script. Existing models can be evaluated with ```evaluate_model.py```. Both models contain a list of hyperparameters that allow exploring all the variations of the dataset.
+A simple model training can be run with the ```train_model.py``` script. Existing models can be evaluated with ```evaluate_model.py```. Both files contain a list of hyperparameters that allow exploring all the variations of the dataset.
 
 ## Reference
 
