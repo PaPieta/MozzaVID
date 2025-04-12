@@ -5,9 +5,9 @@ import numpy as np
 
 import webdataset as wds
 
-SMALL_URL = "https://huggingface.co/datasets/PaPieta/MozzaVID_Small/resolve/main/"
-BASE_URL = "https://huggingface.co/datasets/PaPieta/MozzaVID_Base/resolve/main/"
-LARGE_URL = "https://huggingface.co/datasets/PaPieta/MozzaVID_Large/resolve/main/"
+SMALL_URL = "https://huggingface.co/datasets/dtudk/MozzaVID_Small/resolve/main/"
+BASE_URL = "https://huggingface.co/datasets/dtudk/MozzaVID_Base/resolve/main/"
+LARGE_URL = "https://huggingface.co/datasets/dtudk/MozzaVID_Large/resolve/main/"
 
 
 def get_transform(data_dim: str, data_aug: bool = False, rotate: bool = False) -> monai_t.Compose:
