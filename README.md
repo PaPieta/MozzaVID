@@ -23,13 +23,13 @@ We provide two sources of data:
 
       To use it, you need to download and unzip the dataset locally, then adjust the path to the data in ```evaluate_model.py``` and ```train_model.py```. Notice that the Big dataset requires over 300 GB of storage.
 
-2. HuggingFace WebDatasets [[Small split](https://huggingface.co/datasets/PaPieta/MozzaVID_Small)] [[Base split](https://huggingface.co/datasets/PaPieta/MozzaVID_Base)] [[Large split](https://huggingface.co/datasets/PaPieta/MozzaVID_Large)]:
+2. HuggingFace WebDatasets [[Small split](https://huggingface.co/datasets/dtudk/MozzaVID_Small)] [[Base split](https://huggingface.co/datasets/dtudk/MozzaVID_Base)] [[Large split](https://huggingface.co/datasets/dtudk/MozzaVID_Large)]:
 
       This setup enables continuous streaming of data during training and evaluation, and requires little-to-no storage space. Continuous internet access is required. Suggested data loading setup is provided in ```utils_stream.py```. To use it, change to ```DATA_MODE='stream'``` in ```evaluate_model.py``` and ```train_model.py```
 
 ## Models
 
-Model checkpoints used in the paper can be downloaded from [here](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/models)
+Model checkpoints used in the paper can be downloaded from [here](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/models) or [here](https://huggingface.co/PaPieta/MozzaVID_models).
 
 The paths to models has to be adjusted in the ```evaluate_model.py``` and ```train_model.py```
 
