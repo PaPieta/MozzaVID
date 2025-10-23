@@ -87,12 +87,29 @@ class Decoder:
             Dimensionality of the data either "2D" or "3D.
     """
 
-    def __init__(self, transform: monai_t.Compose, granularity: str = "coarse", data_dim: str = "2D"):
+    def __init__(self, transform: monai_t.Compose, granularity: str = "coarse", data_dim: str = "2D", split: str = "train"):
     
         self.granularity = granularity
         self.data_dim = data_dim
         self.transform = transform
+        self.split = split
 
+    def check_split(self, sample: dict):
+        """
+        Checks if the sample within a shard belongs to the currently used split
+        Arguments:
+            sample: dict
+                Sample from the webdataset.
+        Returns:
+            bool
+        """
+        if self.granularity == "coarse":
+            return  sample["json"]['split_coarse'] == self.split
+        elif self.granularity == "fine":
+            return  sample["json"]['split_fine'] == self.split
+        else:
+            raise ValueError("Granularity must be 'coarse' or 'fine'")
+        
     def decode_label(self, json: dict):
         """
         Decode the label from the json file, using the chosen granularity.
@@ -174,32 +191,33 @@ def get_data_loaders(dataset_split: str, data_dim: str, granularity: str, rotate
 
     if dataset_split == "Small":
         data_path = SMALL_URL
-        val_shards = "{0000..0005}"
-        train_shards = "{0000..0022}"
+        shards = "{0000..0031}"
         shuffle_buffer = 10
     elif dataset_split == "Base":
         data_path = BASE_URL
-        val_shards = "{0000..0027}"
-        train_shards = "{0000..0087}"
+        shards = "{0000..0128}"
         shuffle_buffer = 50
     elif dataset_split == "Large":
         data_path = LARGE_URL
-        val_shards = "{0000..0027}"
-        train_shards = "{0000..0087}"
+        shards = "{0000..1033}"
         shuffle_buffer = 50
     else:
         raise ValueError("dataset_split must be 'Small', 'Base' or 'Large'")
     
+    webdataset_path = data_path + f"shard_{shards}.tar"    
+    
     transform_train = get_transform(data_dim, data_aug=True, rotate=rotate)
-    transform_val = get_transform(data_dim, data_aug=False, rotate=rotate)
+    transform_val_test = get_transform(data_dim, data_aug=False, rotate=rotate)
 
-    decoder_train = Decoder(granularity=granularity, data_dim=data_dim, transform=transform_train)
-    decoder_val = Decoder(granularity=granularity, data_dim=data_dim, transform=transform_val)
-
+    decoder_train = Decoder(granularity=granularity, data_dim=data_dim, transform=transform_train, split="train")
+    decoder_val = Decoder(granularity=granularity, data_dim=data_dim, transform=transform_val_test, split="val")
+    decoder_test = Decoder(granularity=granularity, data_dim=data_dim, transform=transform_val_test, split="test")
+   
     dataset_train = (   
-        wds.WebDataset(data_path + f"train/train_shard_{train_shards}.tar", shardshuffle=True)
-        .shuffle(shuffle_buffer)
+        wds.WebDataset(webdataset_path, shardshuffle=True)
         .decode()
+        .shuffle(shuffle_buffer)
+        .select(decoder_train.check_split)
         .map(decoder_train.decode)
         .map(decoder_train.apply_transform)
         .to_tuple("image", "label")
@@ -207,15 +225,27 @@ def get_data_loaders(dataset_split: str, data_dim: str, granularity: str, rotate
     )
 
     dataset_val = (
-        wds.WebDataset(data_path + f"val/val_shard_{val_shards}.tar", shardshuffle=False)
+        wds.WebDataset(webdataset_path, shardshuffle=False)
         .decode()
+        .select(decoder_val.check_split)
         .map(decoder_val.decode)
         .map(decoder_val.apply_transform)
         .to_tuple("image", "label")
         .batched(batch_size)
     )
 
+    dataset_test = (
+        wds.WebDataset(webdataset_path, shardshuffle=False)
+        .decode()
+        .select(decoder_test.check_split)
+        .map(decoder_test.decode)
+        .map(decoder_test.apply_transform)
+        .to_tuple("image", "label")
+        .batched(batch_size)
+    )
+
     train_loader = wds.WebLoader(dataset_train, batch_size=None, num_workers=num_workers)
     val_loader = wds.WebLoader(dataset_val, batch_size=None, num_workers=num_workers)
+    test_loader = wds.WebLoader(dataset_test, batch_size=None, num_workers=num_workers)
 
-    return train_loader, val_loader
+    return train_loader, val_loader, test_loader

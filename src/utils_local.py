@@ -180,40 +180,50 @@ def get_splits(dataset_path: str, granularity: str = "coarse"):
             DataFrame with the train set file paths.
         X_val: pd.DataFrame
             DataFrame with the validation set file paths.
+        X_test: pd.DataFrame
+            DataFrame with the test set file paths.
         y_train: pd.Series
             Series with the train set labels.
         y_val: pd.Series
             Series with the validation set labels.
+        y_test: pd.Series
+            Series with the test set labels.
     """
 
     if granularity == "coarse":
+        master_dataset_file = "dataset_coarse.csv"
         label = "label_cheese"
     elif granularity == "fine":
+        master_dataset_file = "dataset_fine.csv"
         label = "label_sample"
     else:
-        raise ValueError("Granularity must be 'coarse' or 'fine'")
+        raise ValueError(f"Granularity must be 'coarse' or 'fine', but got {granularity}")
 
     # Load the dataset
-    train_csv_path = os.path.join(dataset_path, "train.csv")
-    val_csv_path = os.path.join(dataset_path, "val.csv")
-    df_train = pd.read_csv(train_csv_path)
-    df_val = pd.read_csv(val_csv_path)
+    dataset_csv_path = os.path.join(dataset_path, master_dataset_file)
+    df = pd.read_csv(dataset_csv_path)
 
-    X_train = df_train[["file"]]
-    y_train = df_train[label]
+    X_train = df[df["split"] == "train"][["file"]]
+    y_train = df[df["split"] == "train"][label]
 
-    X_val = df_val[["file"]]
-    y_val = df_val[label]
+    X_test = df[df["split"] == "test"][["file"]]
+    y_test = df[df["split"] == "test"][label]
+
+    X_val = df[df["split"] == "val"][["file"]]
+    y_val = df[df["split"] == "val"][label]
 
     # Append the dataset path to the file paths
-    X_train.loc[:, "file"] = dataset_path + X_train["file"]
-    X_val.loc[:, "file"] = dataset_path + X_val["file"]
+    X_train["file"] = dataset_path + X_train["file"]
+    X_test["file"] = dataset_path + X_test["file"]
+    X_val["file"] = dataset_path + X_val["file"]
 
     return (
         X_train,
         X_val,
+        X_test,
         y_train,
         y_val,
+        y_test,
     )
 
 
@@ -221,8 +231,10 @@ def get_data_loaders(
     dataset_func: Union[Mozzarella2D, Mozzarella3D],
     X_train: pd.DataFrame,
     X_val: pd.DataFrame,
+    X_test: pd.DataFrame,
     y_train: pd.Series,
     y_val: pd.Series,
+    y_test: pd.Series,
     batch_size: int = 2,
     num_workers: int = 2,
     rotate: bool = False,
@@ -236,10 +248,14 @@ def get_data_loaders(
             DataFrame with the train set file paths.
         X_val: pd.DataFrame
             DataFrame with the validation set file paths.
+        X_test: pd.DataFrame
+            DataFrame with the test set file paths.
         y_train: pd.Series
             Series with the train set labels.
         y_val: pd.Series
             Series with the validation set labels.
+        y_test: pd.Series
+            Series with the test set labels.
         batch_size: int
             Batch size for the DataLoader.
         num_workers: int
@@ -255,6 +271,7 @@ def get_data_loaders(
 
     train_dataset = dataset_func(X_train, y_train, data_aug=True, rotate=rotate)
     val_dataset = dataset_func(X_val, y_val, data_aug=False, rotate=rotate)
+    test_dataset = dataset_func(X_test, y_test, data_aug=False, rotate=rotate)
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,
@@ -269,6 +286,13 @@ def get_data_loaders(
         num_workers=num_workers,
         pin_memory=True,
     )
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True,
+    ) 
 
-    return train_loader, val_loader
+    return train_loader, val_loader, test_loader
 

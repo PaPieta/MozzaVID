@@ -6,7 +6,7 @@ import utils_local, utils_stream
 
 torch.set_float32_matmul_precision("medium")
 
-MODEL_BASE_PATH = "models_original/"
+MODEL_BASE_PATH = "models/"
 DATA_BASE_PATH = "data/DTU/" # Set if data is stored locally, streaming path is hard coded in utils_stream.py
 DATA_MODE = "stream"  # "local" or "stream"
 
@@ -33,14 +33,14 @@ if __name__ == "__main__":
         data_path = f"{DATA_BASE_PATH}{DATASET_SPLIT}/"
         print(f"Loading the data from: {data_path}")
 
-        X_train, X_val, y_train, y_val = utils_local.get_splits(data_path)
+        X_train, X_val, X_test, y_train, y_val, y_test = utils_local.get_splits(data_path, GRANULARITY)
         dataset_func = getattr(utils_local, f"Mozzarella{DATA_DIM}")
-        train_loader, val_loader = utils_local.get_data_loaders(
-            dataset_func, X_train, X_val, y_train, y_val, BATCH_SIZE, NUM_WORKERS
+        train_loader, val_loader, test_loader = utils_local.get_data_loaders(
+            dataset_func, X_train, X_val, X_test, y_train, y_val, y_test, BATCH_SIZE, NUM_WORKERS
         )
     elif DATA_MODE == "stream":
         print(f"Streaming the {DATASET_SPLIT} data split from HuggingFace")
-        train_loader, val_loader = utils_stream.get_data_loaders(
+        train_loader, val_loader, test_loader = utils_stream.get_data_loaders(
             DATASET_SPLIT, data_dim=DATA_DIM, granularity=GRANULARITY,
             rotate=False, batch_size=BATCH_SIZE, num_workers=NUM_WORKERS)
     else:
@@ -76,4 +76,20 @@ if __name__ == "__main__":
     y_pred = np.concatenate(y_pred)
     y_true = np.concatenate(y_true)
 
-    print("Accuracy:", accuracy_score(y_true, np.argmax(y_pred, 1)))
+    print("Validation accuracy:", accuracy_score(y_true, np.argmax(y_pred, 1)))
+
+    # Make predictions using test data
+    y_pred = []
+    y_true = []
+    for batch in iter(test_loader):
+        x_in = batch[0].type(torch.FloatTensor).to(device)
+
+        y_out = model(x_in)
+
+        y_pred.append(y_out.cpu().detach().numpy())
+        y_true.append(batch[1].cpu().detach().numpy())
+    
+    y_pred = np.concatenate(y_pred)
+    y_true = np.concatenate(y_true)
+
+    print("Test accuracy:", accuracy_score(y_true, np.argmax(y_pred, 1)))

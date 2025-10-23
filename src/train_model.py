@@ -26,7 +26,7 @@ DATA_DIM = DATA_DIM_LIST[0]
 MODEL_TYPE = MODEL_TYPE_LIST[0]
 
 LR = 0.001  # Learning rate
-NUM_EPOCHS = 10
+NUM_EPOCHS = 3
 BATCH_SIZE = 4
 NUM_WORKERS = 4
 ROTATE = False  # Additional rotation of the data, used in the ablation study
@@ -38,14 +38,10 @@ def train():
     if DATA_MODE == "local":
         data_path = f"{DATA_BASE_PATH}{DATASET_SPLIT}/"
 
-        X_train, X_val, y_train, y_val = utils_local.get_splits(data_path)
+        X_train, X_val, X_test, y_train, y_val, y_test = utils_local.get_splits(data_path, GRANULARITY)
         dataset_func = getattr(utils_local, f"Mozzarella{DATA_DIM}")
-        train_loader, val_loader = utils_local.get_data_loaders(
-            dataset_func,
-            X_train,
-            X_val,
-            y_train,
-            y_val,
+        train_loader, val_loader, test_loader = utils_local.get_data_loaders(
+            dataset_func, X_train, X_val, X_test, y_train, y_val, y_test,
             BATCH_SIZE,
             NUM_WORKERS,
             rotate=ROTATE,
@@ -53,7 +49,7 @@ def train():
     elif DATA_MODE == "stream":
         data_path = f"HuggingFace: {DATASET_SPLIT}"
         print(f"Streaming the {DATASET_SPLIT} data split from HuggingFace")
-        train_loader, val_loader = utils_stream.get_data_loaders(
+        train_loader, val_loader, test_loader = utils_stream.get_data_loaders(
             DATASET_SPLIT, data_dim=DATA_DIM, granularity=GRANULARITY,
             rotate=ROTATE, batch_size=BATCH_SIZE, num_workers=NUM_WORKERS)
     else:
@@ -101,6 +97,8 @@ def train():
     )
     trainer.fit(model, train_loader, val_loader)
 
+    # Test model
+    trainer.test(model, test_loader, ckpt_path="best")
 
 if __name__ == "__main__":
     train()
