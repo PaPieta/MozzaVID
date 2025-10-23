@@ -1,6 +1,5 @@
 import torch
 from monai import transforms as monai_t
-import os
 import numpy as np
 
 import webdataset as wds

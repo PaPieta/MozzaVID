@@ -26,7 +26,7 @@ DATA_DIM = DATA_DIM_LIST[0]
 MODEL_TYPE = MODEL_TYPE_LIST[0]
 
 LR = 0.001  # Learning rate
-NUM_EPOCHS = 3
+NUM_EPOCHS = 10
 BATCH_SIZE = 4
 NUM_WORKERS = 4
 ROTATE = False  # Additional rotation of the data, used in the ablation study
