@@ -19,9 +19,11 @@ Pytorch is commented out in both requirement files, since it may require a syste
 ## Data 
 
 We provide two sources of data:
-1. Complete "raw" data [[LINK](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/)]:
+1. Complete data [[LINK](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/)]:
 
-      To use it, you need to download and unzip the dataset locally, then adjust the path to the data in ```evaluate_model.py``` and ```train_model.py```. Notice that the Big dataset requires over 300 GB of storage.
+      To use it, you need to download and unzip the dataset splits locally, then adjust the path to the data in ```evaluate_model.py``` and ```train_model.py```. Notice that the Big dataset requires over 300 GB of storage.
+
+      Unique "raw" scans can be explored through the [raw_dataset](https://archive.compute.dtu.dk/files/public/projects/MozzaVID/raw_dataset) folder. It contains 25 subfolders, one for each coarse-grained class. Inside the subfolders are .tiff files containing cleaned up CT scans. Each scan is ~5.1 GB in size, (2156, 1601, 1601)px saved with uint8 data type. The scans are cropped to conain only the cheese microstructure (no surrounding air), and their intensity is unified. 
 
 2. HuggingFace WebDatasets [[Small split](https://huggingface.co/datasets/dtudk/MozzaVID_Small)] [[Base split](https://huggingface.co/datasets/dtudk/MozzaVID_Base)] [[Large split](https://huggingface.co/datasets/dtudk/MozzaVID_Large)]:
 
